@@ -1,0 +1,13 @@
+#!/bin/bash
+url=$1
+searchstring="frontend-html5_"
+name=${url#*$searchstring}
+
+cd ~/Projects
+hg clone $url $name
+cd $name
+hg import ../patch/clone.diff --no-commit
+npm i
+npm start
+cd layers/functional-tests
+mvn clean install

@@ -1,0 +1,8 @@
+#!/bin/bash
+projectfolder="Projects"
+
+to () {
+    cd ~/$projectfolder/$1
+}
+
+compdef '_files -W ~/$projectfolder' to

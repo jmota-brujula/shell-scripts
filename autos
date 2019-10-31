@@ -1,0 +1,35 @@
+#!/bin/bash
+
+browser=chrome
+
+while [ -n "$1" ]; do
+    arg=$1;
+    if [ ${arg:0:1} = "-" ] ; then
+        for (( i=1; i<${#arg}; i++ )); do
+            opt="${arg:$i:1}"
+            case $opt in
+                m) browser=chromeMobile ;;
+                k) keepbrowser="--keepBrowser=1" ;;
+                b) background="--headless=1" ;;
+                s) seed="--seed=$2"; shift ;;
+                g) group="--group=@$2"; shift ;;
+                *) echo "invalid option -$opt";;
+            esac
+        done
+    else
+        feature="--test=$1"
+    fi
+
+    shift
+done
+
+if [ -z "$feature" ] && [ -z "$group" ]; then
+    group="--group=@test"
+fi
+
+cd layers/functional-tests
+. ~/.nvm/nvm.sh
+nvm use 8
+set -x
+grunt $browser --profile=frontDev --remote=1 $keepbrowser $background $group $seed $feature
+
