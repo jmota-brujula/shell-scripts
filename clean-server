@@ -2,4 +2,12 @@
 rm -fr ~/servers/jboss-eap-6.4/standalone/data/*
 rm -fr ~/servers/jboss-eap-6.4/standalone/tmp/*
 rm -fr ~/servers/jboss-eap-6.4/standalone/log/*
-echo "Cleaned"
+
+result="Cleaned";
+
+if [ "$1" == "-a" ]; then
+    rm -fr ~/servers/jboss-eap-6.4/standalone/deployments/*
+    result="Cleaned All"
+fi
+
+echo $result
